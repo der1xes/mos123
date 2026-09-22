@@ -1,7 +1,7 @@
 bash << 'EOF'
 set -e
 echo "===== ДО ====="
-ls -ld /lib64/libc.so.6 /usr/lib64/libc.so.6
+ls -ld /lib64/libc.so.6 /usr/lib64/libc.so.6 || true
 ls -ld /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu 2>/dev/null || true
 rpm -q glibc
 rpm -q happ || true
