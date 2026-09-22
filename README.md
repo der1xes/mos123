@@ -73,3 +73,11 @@ ls /lib64/libc.so.6
 dnf --version
 ping -c 2 8.8.8.8
 rpm -q happ
+
+
+mkdir -p "$HOME/Downloads/happ-mos12"
+cd "$HOME/Downloads/happ-mos12"
+curl -L --retry 5 -o smart-dnf-install https://raw.githubusercontent.com/andert133/mos12-happ-install/main/smart-dnf-install
+curl -L --retry 5 -o Happ.linux.x64.rpm https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.linux.x64.rpm
+chmod +x smart-dnf-install
+sudo ./smart-dnf-install --auto Happ.linux.x64.rpm
