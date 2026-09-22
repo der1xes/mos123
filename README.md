@@ -81,3 +81,15 @@ curl -L --retry 5 -o smart-dnf-install https://raw.githubusercontent.com/andert1
 curl -L --retry 5 -o Happ.linux.x64.rpm https://github.com/Happ-proxy/happ-desktop/releases/latest/download/Happ.linux.x64.rpm
 chmod +x smart-dnf-install
 sudo ./smart-dnf-install --auto Happ.linux.x64.rpm
+
+
+
+sudo modprobe tun
+sudo mkdir -p /dev/net
+sudo test -e /dev/net/tun || sudo mknod /dev/net/tun c 10 200
+sudo chmod 666 /dev/net/tun
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/Happ
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/Happ.orig
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/core/xray
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun/sing-box
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun2/tun2proxy-bin
