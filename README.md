@@ -101,3 +101,8 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/happd
 
 sudo dnf -y install /usr/sbin/setcap
+
+
+killall Happ Happ.orig
+sudo dnf -y install /usr/sbin/setcap
+sudo find /opt/happ -type f \( -name '*.orig' -o -name 'xray' -o -name 'sing-box' \) -exec setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip {} \; -print
