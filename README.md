@@ -67,3 +67,9 @@ sudo chown root:root /dev/net/tun
 rm -rf "$HOME/happ-rosa" "$HOME/happ.sh"
 rm -rf "$HOME/.config/happ" "$HOME/.config/Happ"
 rm -rf "$HOME/.local/share/happ" "$HOME/.local/share/Happ"
+
+
+ls /lib64/libc.so.6
+dnf --version
+ping -c 2 8.8.8.8
+rpm -q happ
