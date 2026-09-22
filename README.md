@@ -52,3 +52,18 @@ echo "ping:"
 ping -c 1 -W 3 8.8.8.8 || ping -c 1 -W 3 1.1.1.1 || echo "сеть ещё мёртвая"
 echo "ГОТОВО. Перелогиньтесь или перезагрузитесь."
 EOF
+
+
+
+sudo ldconfig
+killall Happ Happ.orig happd
+sudo systemctl stop happd.service
+sudo rpm -e --noscripts happ
+sudo dnf -y remove happ
+sudo rm -rf /opt/happ
+sudo ldconfig
+sudo chmod 660 /dev/net/tun
+sudo chown root:root /dev/net/tun
+rm -rf "$HOME/happ-rosa" "$HOME/happ.sh"
+rm -rf "$HOME/.config/happ" "$HOME/.config/Happ"
+rm -rf "$HOME/.local/share/happ" "$HOME/.local/share/Happ"
