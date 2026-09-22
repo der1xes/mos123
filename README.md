@@ -93,3 +93,9 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/Hap
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/core/xray
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun/sing-box
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun2/tun2proxy-bin
+
+
+sudo dnf -y install libcap
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/Happ
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun2/tun2proxy-bin
+sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/happd
