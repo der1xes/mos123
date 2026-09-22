@@ -99,3 +99,5 @@ sudo dnf -y install libcap
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/Happ
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/tun2/tun2proxy-bin
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip /opt/happ/bin/happd
+
+sudo dnf -y install /usr/sbin/setcap
