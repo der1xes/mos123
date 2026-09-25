@@ -106,3 +106,69 @@ sudo dnf -y install /usr/sbin/setcap
 killall Happ Happ.orig
 sudo dnf -y install /usr/sbin/setcap
 sudo find /opt/happ -type f \( -name '*.orig' -o -name 'xray' -o -name 'sing-box' \) -exec setcap cap_net_admin,cap_net_raw,cap_net_bind_service+eip {} \; -print
+
+
+
+bash << 'EOF'
+say() {
+  local n="$1" p found=0
+  echo "-- $n"
+  for p in \
+    "/lib64/$n" \
+    "/usr/lib64/$n" \
+    "/opt/happ/lib/$n" \
+    "/opt/happ/.smart-runtime/lib/x86_64-linux-gnu/$n" \
+    "/opt/happ/.smart-runtime/usr/lib/x86_64-linux-gnu/$n"
+  do
+    if [[ -L "$p" && ! -e "$p" ]]; then
+      echo "BROKEN $p -> $(readlink "$p")"
+      found=1
+    elif [[ -e "$p" ]]; then
+      ls -l "$p"
+      found=1
+    fi
+  done
+  [[ $found == 1 ]] || echo "NO $n"
+}
+file() {
+  echo "-- $1"
+  if [[ -L "$1" && ! -e "$1" ]]; then echo "BROKEN $1 -> $(readlink "$1")"
+  elif [[ -e "$1" ]]; then ls -l "$1"
+  else echo "NO $1"; fi
+}
+echo "=== СИСТЕМНЫЕ ССЫЛКИ СКРИПТА ==="
+file /lib/x86_64-linux-gnu
+file /usr/lib/x86_64-linux-gnu
+file /opt/happ/.ld64
+echo "=== БИБЛИОТЕКИ РАНТАЙМА ==="
+for n in \
+  ld-linux-x86-64.so.2 libc.so.6 libm.so.6 libmvec.so.1 \
+  libpthread.so.0 libdl.so.2 librt.so.1 libresolv.so.2 \
+  libutil.so.1 libanl.so.1 libnsl.so.1 libBrokenLocale.so.1 \
+  libthread_db.so.1 libc_malloc_debug.so.0 \
+  libnss_files.so.2 libnss_dns.so.2 libnss_compat.so.2 libnss_hesiod.so.2 \
+  libgcc_s.so.1 libstdc++.so.6 libssl.so.3 libcrypto.so.3 \
+  libssl.so.1.1 libcrypto.so.1.1
+do say "$n"; done
+echo "=== GUI, ИХ СКРИПТ НЕ СТАВИТ ==="
+for n in libGL.so.1 libEGL.so.1 libX11.so.6 libxcb.so.1 \
+  libxkbcommon.so.0 libfontconfig.so.1 libfreetype.so.6 \
+  libnss3.so libglib-2.0.so.0 libdbus-1.so.3
+do
+  echo "-- $n"
+  ldconfig -p 2>/dev/null | grep "$n" || echo "NO $n"
+done
+echo "=== ФАЙЛЫ HAPP ==="
+for f in \
+  /opt/happ/bin/Happ /opt/happ/bin/Happ.orig \
+  /opt/happ/bin/happd /opt/happ/bin/happd.orig \
+  /opt/happ/bin/happ-diag /opt/happ/bin/happ-tcping \
+  /opt/happ/bin/core/xray /opt/happ/bin/core/xray.orig \
+  /opt/happ/bin/tun/sing-box /opt/happ/bin/tun/sing-box.orig \
+  /opt/happ/bin/tun2/tun2proxy-bin /opt/happ/bin/tun2/tun2proxy-bin.orig \
+  /opt/happ/bin/tun2/udpgw-server \
+  /opt/happ/bin/core/geoip.dat /opt/happ/bin/core/geosite.dat \
+  /dev/net/tun /usr/sbin/setcap /usr/bin/setcap
+do file "$f"; done
+echo "=== DONE ==="
+EOF
